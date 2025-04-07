@@ -8,10 +8,10 @@ class HashMap
     @capacity = capacity
     @load_factor = load_factor
     @size = 0
-    @storages = Array.new(@capacity) { [] }
+    @buckets = Array.new(@capacity) { [] }
   end
 
-  # creates hash keys
+  # creates hash code
   def hash(key)
     hash_code = 0
     prime_no = 31
@@ -19,7 +19,16 @@ class HashMap
     key.each_char { |char| hash_code = prime_no * hash_code + char.ord }
     hash_code
   end
+
+  # bucket index finder
+  def bucket_index(key)
+    index = hash(key) % @capacity
+    raise IndexError if index.negative? || index >= @buckets.length
+
+    index
+  end
 end
 
 test = HashMap.new
 puts test.hash('apple')
+puts test.bucket_index('apple')
