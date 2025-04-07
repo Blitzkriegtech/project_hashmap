@@ -55,10 +55,34 @@ class HashMap
     end
     'nil'
   end
+
+  # returns true or false based on whether or not the key exists in the hash map
+  def has?(key)
+    index = bucket_index(key)
+    bucket = @buckets[index]
+
+    bucket.any? { |entry| entry[0] == key }
+  end
+
+  # returns the deleted entry's value
+  def remove(key)
+    index = bucket_index(key)
+    bucket = @buckets[index]
+
+    entry_index = bucket.index { |entry| entry[0] == key }
+    if entry_index
+      removed_key = bucket.delete_at(entry_index)
+      @size -= 1
+      removed_key[1]
+    else
+      'nil'
+    end
+  end
 end
 
 test = HashMap.new
 test.set('apple', 'red')
-puts test.get('apple')
-puts test.get('mango')
-puts test.get('strawberry')
+test.set('guava', 'green')
+p test.size
+puts test.remove('guava')
+p test.size
