@@ -44,10 +44,21 @@ class HashMap
       grow! if @size.to_f / @capacity > @load_factor
     end
   end
+
+  # returns the value of a key
+  def get(key)
+    index = bucket_index(key)
+    bucket = @buckets[index]
+
+    bucket.each do |entry|
+      return entry[1] if entry[0] == key
+    end
+    'nil'
+  end
 end
 
 test = HashMap.new
 test.set('apple', 'red')
-puts test.size
-test.set('peach', 'pink')
-puts test.size
+puts test.get('apple')
+puts test.get('mango')
+puts test.get('strawberry')
