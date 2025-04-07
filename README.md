@@ -1,5 +1,5 @@
 # project_hashmap
-# HashMap Implementation in Ruby 🐍💡
+# HashMap Implementation in Ruby ♦️💡
 
 This project is a custom implementation of a basic **HashMap** in Ruby that supports essential key-value operations, including:
 
