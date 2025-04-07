@@ -78,11 +78,48 @@ class HashMap
       'nil'
     end
   end
+
+  # returns the number of stored keys in the hash map
+  def length
+    puts @size
+  end
+
+  # removes all entries in the hash map
+  def clear
+    @buckets = Array.new(@capacity) { [] }
+    @size = 0
+  end
+
+  # returns an array containing all the keys inside the hash map
+  def keys
+    puts(@buckets.flatten(1).map { |entry| entry[0] })
+  end
+
+  # returns an array containing all the values
+  def values
+    puts(@buckets.flatten(1).map { |entry| entry[1] })
+  end
+
+  # returns an array that contains each key-value pair
+  def entries
+    @buckets.flatten(1).map { |entry| p entry }
+  end
 end
 
 test = HashMap.new
 test.set('apple', 'red')
-test.set('guava', 'green')
-p test.size
-puts test.remove('guava')
-p test.size
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
+test.length
+test.keys
+test.values
+test.entries
