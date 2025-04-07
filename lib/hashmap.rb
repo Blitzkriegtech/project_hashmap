@@ -27,8 +27,27 @@ class HashMap
 
     index
   end
+
+  # sets a key-value pair, if already exists, updates the old value with the new one
+  def set(key, value)
+    index = bucket_index(key)
+    bucket = @buckets[index]
+
+    # check if the key already exist, update if it exist otherwise add [key, value] in the bucket
+    existing_entry = bucket.find { |entry| entry[0] == key }
+    if existing_entry
+      existing_entry[1] = value
+    else
+      bucket << [key, value]
+      @size += 1
+      # check if the buckets capacity needs to grow
+      grow! if @size.to_f / @capacity > @load_factor
+    end
+  end
 end
 
 test = HashMap.new
-puts test.hash('apple')
-puts test.bucket_index('apple')
+test.set('apple', 'red')
+puts test.size
+test.set('peach', 'pink')
+puts test.size
