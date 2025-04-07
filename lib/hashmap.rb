@@ -104,6 +104,20 @@ class HashMap
   def entries
     @buckets.flatten(1).map { |entry| p entry }
   end
+
+  private
+
+  # increases the size of the capacity of the hash
+  def grow!
+    old_buckets = @buckets
+    @capacity *= 2
+    @size = 0
+    @buckets = Array.new(@capacity) { [] }
+
+    old_buckets.flatten(1).each do |key, value|
+      set(key, value)
+    end
+  end
 end
 
 test = HashMap.new
@@ -120,6 +134,10 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 test.length
-test.keys
-test.values
-test.entries
+puts test.capacity
+test.length
+puts test.load_factor
+test.set('moon', 'silver')
+test.length
+puts test.capacity
+puts test.load_factor
