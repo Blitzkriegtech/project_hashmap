@@ -106,20 +106,119 @@ class HashMap
   end
 end
 
-test = HashMap.new
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.length
-test.keys
-test.values
-test.entries
+# HashSet
+class HashSet
+  attr_reader :capacity, :size, :load_factor
+
+  def initialize(capacity = 16, load_factor = 0.75)
+    @capacity = capacity
+    @load_factor = load_factor
+    @size = 0
+    @buckets = Array.new(@capacity) { [] }
+  end
+
+  def hash(key)
+    hash_code = 0
+    prime_no = 31
+
+    key.each_char { |char| hash_code = prime_no * hash_code + char.ord }
+    hash_code
+  end
+
+  def bucket_index(key)
+    index = hash(key) % @capacity
+    raise IndexError if index.negative? || index >= @buckets.length
+
+    index
+  end
+
+  def add(key)
+    index = buncket_index(key)
+    bucket = @buckets[index]
+
+    if bucket.include?(key)
+      nil
+    else
+      bucket << key
+      @size += 1
+      grow! if @size.to_f / @capacity > @load_factor
+    end
+  end
+
+  def get(key)
+    index = buncket_index(key)
+    bucket = @buckets[index]
+
+    bucket.include?(key) ? key : 'nil'
+  end
+
+  def remove(key)
+    index = buncket_index(key)
+    bucket = @buckets[index]
+
+    key_index = bucket.index { |entry| entry == key }
+    if bucket.include?(key)
+      bucket.delete_at(key_index)
+      @size -= 1
+      puts key
+    else
+      puts 'nil'
+    end
+  end
+
+  def has?(key)
+    index = buncket_index(key)
+    bucket = @buckets[index]
+
+    p bucket.include?(key)
+  end
+
+  def length
+    p @size
+  end
+
+  def clear
+    @capacity = 16
+    @size = 0
+    @buckets = Array.new(@capacity) { [] }
+    puts 'Cleared'
+  end
+
+  def keys
+    p @buckets.flatten
+  end
+
+  private
+
+  def grow!
+    old_buckets = @buckets
+    @capacity *= 2
+    @size = 0
+    @buckets = Array.new(@capacity) { [] }
+
+    old_buckets.flatten.each { |key| add(key) }
+  end
+end
+
+# test = HashMap.new
+# test.set('apple', 'red')
+# test.set('banana', 'yellow')
+# test.set('carrot', 'orange')
+# test.set('dog', 'brown')
+# test.set('elephant', 'gray')
+# test.set('frog', 'green')
+# test.set('grape', 'purple')
+# test.set('hat', 'black')
+# test.set('ice cream', 'white')
+# test.set('jacket', 'blue')
+# test.set('kite', 'pink')
+# test.set('lion', 'golden')
+# test.length
+# test.keys
+# test.values
+# test.entries
+# test2 = HashSet.new
+# test2.add('apple')
+# test2.add('grapes')
+# test2.add('rock')
+# test2.keys
